@@ -10,12 +10,16 @@ import numpy as np
 data = dict()
 lock = threading.Lock()
 
+# Define the publisher thread
 class Publisher(threading.Thread):
     def __init__(self):
         super().__init__()
         self.redis = redis.Redis(host='192.168.68.110', port=6379, db=0)
 
     def run(self):
+        """
+        Defines the thread content to execute
+        """
         global data
         data = {"temperature": 20}
         while True:
@@ -25,6 +29,7 @@ class Publisher(threading.Thread):
             time.sleep(30)
 
 
+# Define the Subscriber thread...
 class Subscriber(threading.Thread):
     def __init__(self):
         super().__init__()
@@ -35,6 +40,9 @@ class Subscriber(threading.Thread):
 
     
     def run(self):
+        """
+        Defines the thread content to execute
+        """
         global data
         while True:
             message = self.pubsub.get_message()
